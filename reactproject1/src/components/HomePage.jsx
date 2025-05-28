@@ -16,7 +16,7 @@ function HomePage() {
                     className="text-5xl md:text-6xl font-extrabold text-green-800 mb-6"
                     
                 >
-                    Welcome to Greenpoint Afghanistan
+                    Welcome to  Afghanistan
                 </h1>
                 <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-10">
                     Premium quality Afghan dry fruits exported with care and excellence. Explore our delicious range!
