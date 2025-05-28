@@ -235,7 +235,7 @@ button {
     }
 }
 .contact-order-btn {
-     background-color: #28a745; 
+    background-color: #28a745;
     color: white;
     padding: 12px 25px;
     border: none;
@@ -247,10 +247,10 @@ button {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     display: inline-block;
     text-align: center;
-    text-decoration: none;  
+    text-decoration: none;
     user-select: none;
-    position:absolute;
-    
+    position: absolute;
+    right: 4px;
 }
 .product-media img,
 .product-media video {
