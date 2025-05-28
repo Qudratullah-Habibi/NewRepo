@@ -12,6 +12,10 @@ h1, h2, h3 {
     color: #065f46;
 }
 
+.media-item {
+    margin-bottom: 16px; /* adjust value as needed */
+}
+
 .container {
     max-width: 1200px;
     margin: auto;
@@ -246,7 +250,7 @@ button {
     text-decoration: none;  
     user-select: none;
     position:absolute;
-    left: 4%;
+    
 }
 .product-media img,
 .product-media video {
