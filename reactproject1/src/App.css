@@ -1,0 +1,302 @@
+/* === GLOBAL STYLES === */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom right, #fdfcfb, #e6f4ea);
+    color: #1f2937;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: #065f46;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+button {
+    background-color: #047857;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button:hover {
+        background-color: #065f46;
+    }
+
+/* === APP PAGE STYLES === */
+.app {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #d1fae5, #a7f3d0);
+}
+
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #065f46;
+    text-shadow: 1px 1px #a7f3d0;
+}
+.contact-order-btn{
+    margin-left:50px
+}
+.section {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.highlight {
+    background-color: #fefcbf;
+}
+
+.highlight-light {
+    background-color: #fef9c3;
+}
+
+.divider {
+    margin: 60px 0;
+    border: 1px solid #d1d5db;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.welcome-text {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.user-email {
+    font-weight: bold;
+}
+
+/* Login Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    width: 320px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.login-button,
+.logout-button {
+    background-color: #2563eb;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+    .login-button:hover,
+    .logout-button:hover {
+        background-color: #1e40af;
+    }
+
+.error-text {
+    color: #dc2626;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Card Glass Effect */
+.card-glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* === HERO SECTION BANNER === */
+.hero-section {
+    height: 70vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+    border-radius: 16px;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero-section .hero-content {
+        max-width: 90%;
+        padding: 20px;
+        background-color: rgba(6, 95, 70, 0.6);
+        border-radius: 12px;
+        animation: fadeInScale 1.5s ease forwards;
+    }
+
+    .hero-section h2 {
+        font-size: 2.8rem;
+        margin-bottom: 12px;
+    }
+
+    .hero-section p {
+        font-size: 1.25rem;
+    }
+
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Fade-in animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    animation-fill-mode: forwards;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glow effect for buttons */
+.glow {
+    box-shadow: 0 0 10px #10b981, 0 0 20px #10b981, 0 0 30px #10b981;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h2 {
+        font-size: 2rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .input-field {
+        width: 90%;
+    }
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    .title {
+        font-size: 2.2rem;
+    }
+}
+.contact-order-btn {
+     background-color: #28a745; 
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;  
+    user-select: none;
+    position:absolute;
+    left: 4%;
+}
+.product-media img,
+.product-media video {
+    width: 100%;
+    max-width: 950px;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+ 
+.product-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.product-media img,
+.product-media video {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+    .product-media img:hover,
+    .product-media video:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+
+.product-description {
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 16px;
+    padding: 0 8px; /* Add horizontal padding to align with media edges */
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" >
+
+
+    .contact-order-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+    box-shadow: 0 6px 8px rgba(33, 136, 56, 0.6);
+}
+<button className="contact-order-btn" > Contact to Order</button >
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
