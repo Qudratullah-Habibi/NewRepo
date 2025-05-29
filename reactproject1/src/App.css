@@ -250,7 +250,7 @@ button {
     text-decoration: none;
     user-select: none;
     position: relative; /* Change from absolute to relative */
-    left: 20px; /* Move it to the right */
+    left: 18px; /* Move it to the right */
     margin-top: 10px;
 }
 .product-media img,
