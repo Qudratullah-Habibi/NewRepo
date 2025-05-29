@@ -249,8 +249,8 @@ button {
     text-align: center;
     text-decoration: none;
     user-select: none;
-    position: relative;
-    right:2px;
+    position: absolute;
+
     
 }
 .product-media img,
