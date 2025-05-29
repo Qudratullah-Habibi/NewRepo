@@ -249,9 +249,9 @@ button {
     text-align: center;
     text-decoration: none;
     user-select: none;
-    position: relative; /* Change from absolute to relative */
-    left: 4px; /* Move it to the right */
-    margin-top: 7px;
+    position: relative; 
+    left: 24px;  
+    margin-top: 13px;
 }
 .product-media img,
 .product-media video {
