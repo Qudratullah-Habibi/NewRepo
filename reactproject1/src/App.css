@@ -250,8 +250,8 @@ button {
     text-decoration: none;
     user-select: none;
     position: relative; 
-    left: 35px;  
-    margin-top: 3px;
+    left: 38px;  
+    margin-top: 1px;
 }
 .product-media img,
 .product-media video {
