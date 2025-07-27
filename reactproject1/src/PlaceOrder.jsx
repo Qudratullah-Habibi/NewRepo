@@ -38,15 +38,13 @@ function CheckoutForm({ amount }) {
             } else if (result.paymentIntent.status === "succeeded") {
                 setMessage("Payment successful!");
             }
-
         } catch (err) {
             setMessage("Payment failed. Please try again.");
             console.error("Payment Error:", err);
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
-
 
     return (
         <form onSubmit={handlePayment} style={{ marginTop: "20px" }}>
@@ -59,7 +57,6 @@ function CheckoutForm({ amount }) {
     );
 }
 
-// ...rest of your component code
 export default function PlaceOrder({ isAdmin }) {
     const [formData, setFormData] = useState({
         name: '',
@@ -82,11 +79,8 @@ export default function PlaceOrder({ isAdmin }) {
 
     async function fetchProducts() {
         const { data, error } = await supabase.from('products').select('id, title');
-        if (!error) {
-            setProducts(data);
-        } else {
-            console.error('Error fetching products:', error.message);
-        }
+        if (!error) setProducts(data);
+        else console.error('Error fetching products:', error.message);
     }
 
     async function fetchOrders() {
@@ -95,11 +89,8 @@ export default function PlaceOrder({ isAdmin }) {
             .from('orders')
             .select()
             .order('id', { ascending: false });
-        if (error) {
-            console.error(error);
-        } else {
-            setOrders(data);
-        }
+        if (!error) setOrders(data);
+        else console.error(error);
         setLoadingOrders(false);
     }
 
@@ -122,38 +113,31 @@ export default function PlaceOrder({ isAdmin }) {
             setStatus({ error: 'Invalid email format.', success: '', loading: false });
             return false;
         }
-
         if (!phoneRegex.test(phone)) {
             setStatus({ error: 'Invalid phone number.', success: '', loading: false });
             return false;
         }
-
         if (quantity < 1) {
             setStatus({ error: 'Quantity must be at least 1.', success: '', loading: false });
             return false;
         }
-
         return true;
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
         setStatus({ error: '', success: '', loading: false });
-
         if (!validate()) return;
-
         setStatus({ loading: true, error: '', success: '' });
 
-        const { error } = await supabase.from('orders').insert([
-            {
-                name: formData.name.trim(),
-                email: formData.email.trim(),
-                phone: formData.phone.trim(),
-                product_id: formData.productId.trim(),
-                quantity: formData.quantity,
-                message: formData.message.trim(),
-            },
-        ]);
+        const { error } = await supabase.from('orders').insert([{
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            product_id: formData.productId.trim(),
+            quantity: formData.quantity,
+            message: formData.message.trim(),
+        }]);
 
         if (error) {
             setStatus({ error: 'Failed to place order. Try again.', success: '', loading: false });
@@ -181,7 +165,6 @@ export default function PlaceOrder({ isAdmin }) {
         <div className="order-container">
             <div className="form-side">
                 <h2>Place Your Order</h2>
-
                 {status.error && <p className="error-msg">{status.error}</p>}
                 {status.success && <p className="success-msg">{status.success}</p>}
 
@@ -248,7 +231,6 @@ export default function PlaceOrder({ isAdmin }) {
                             type="number"
                             name="quantity"
                             id="quantity"
-                            placeholder=" "
                             min="1"
                             value={formData.quantity}
                             onChange={handleChange}
@@ -261,7 +243,6 @@ export default function PlaceOrder({ isAdmin }) {
                         <textarea
                             name="message"
                             id="message"
-                            placeholder=" "
                             value={formData.message}
                             onChange={handleChange}
                             rows="3"
