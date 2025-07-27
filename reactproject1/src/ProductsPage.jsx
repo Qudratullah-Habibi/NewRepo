@@ -46,11 +46,11 @@ function ProductsPage() {
                                         <img
                                             src={product.image_url}
                                             alt={product.title}
-                                            className="w-full h-48 sm:h-56 object-cover rounded-md mb-4"
+                                            className="w-full h-48 sm:h-56 object-cover rounded-md media-item"
                                         />
                                     )}
                                     {product.video_url && (
-                                        <video controls className="w-full rounded-md mb-4">
+                                        <video controls className="w-full rounded-md media-item">
                                             <source src={product.video_url} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>

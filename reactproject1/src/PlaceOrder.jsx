@@ -2,10 +2,64 @@
 import { useState, useEffect } from 'react';
 import supabase from './supabaseClient';
 import './OrderForm.css';
-
-// Import the image from src/assets/images
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import dryfruitBasket from './assets/images/dryfruit-basket.png';
 
+const stripePromise = loadStripe("pk_test_51RpQzTHp3WyVTDjVVOrjxBn3uW9IuorJyZ2vaikp6GGeKtS6V6cayxWyJXqZlV9Y52J0YnSNVp32kodcmXlIikre00VXKVcKp7"); // Replace with your Stripe publishable key
+
+// Stripe Checkout Form
+function CheckoutForm({ amount }) {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handlePayment = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            // Create Payment Intent via backend
+            const res = await fetch("http://localhost:4242/create-payment-intent", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount }),
+            });
+            const { clientSecret } = await res.json();
+
+            const result = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                },
+            });
+
+            if (result.error) {
+                setMessage(result.error.message);
+            } else if (result.paymentIntent.status === "succeeded") {
+                setMessage("Payment successful!");
+            }
+        }  } catch (err) {
+            setMessage("Payment failed. Please try again.");
+            console.error("Payment Error:", err);
+        }
+
+
+        setLoading(false);
+    };
+
+    return (
+        <form onSubmit={handlePayment} style={{ marginTop: "20px" }}>
+            <CardElement />
+            <button disabled={!stripe || loading}>
+                {loading ? "Processing..." : "Pay with Card"}
+            </button>
+            {message && <p>{message}</p>}
+        </form>
+    );
+}
+
+// ...rest of your component code
 export default function PlaceOrder({ isAdmin }) {
     const [formData, setFormData] = useState({
         name: '',
@@ -220,6 +274,11 @@ export default function PlaceOrder({ isAdmin }) {
                     </button>
                 </form>
 
+                {/* Stripe Payment Form */}
+                <Elements stripe={stripePromise}>
+                    <CheckoutForm amount={formData.quantity * 100} />
+                </Elements>
+
                 {isAdmin && (
                     <div className="order-list" style={{ marginTop: '30px', color: 'white' }}>
                         <h2>Recent Orders</h2>
@@ -268,4 +327,8 @@ export default function PlaceOrder({ isAdmin }) {
 
 PlaceOrder.propTypes = {
     isAdmin: PropTypes.bool.isRequired,
+};
+
+CheckoutForm.propTypes = {
+    amount: PropTypes.number.isRequired,
 };
