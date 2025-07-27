@@ -2,29 +2,32 @@
 import { useState, useEffect } from 'react';
 import supabase from './supabaseClient';
 import './OrderForm.css';
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import dryfruitBasket from './assets/images/dryfruit-basket.png';
 
-const stripePromise = loadStripe("pk_test_51RpQzTHp3WyVTDjVVOrjxBn3uW9IuorJyZ2vaikp6GGeKtS6V6cayxWyJXqZlV9Y52J0YnSNVp32kodcmXlIikre00VXKVcKp7"); // Replace with your Stripe publishable key
+// Stripe public key (from Stripe dashboard)
+const stripePromise = loadStripe('pk_test_51RpQzTHp3WyVTDjVVOrjxBn3uW9IuorJyZ2vaikp6GGeKtS6V6cayxWyJXqZlV9Y52J0YnSNVp32kodcmXlIikre00VXKVcKp7');
 
 // Stripe Checkout Form
 function CheckoutForm({ amount }) {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState('');
 
     const handlePayment = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setMessage('');
 
         try {
-            const res = await fetch("/api/create-payment-intent", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const res = await fetch('/api/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount }),
             });
+
             const { clientSecret } = await res.json();
 
             const result = await stripe.confirmCardPayment(clientSecret, {
@@ -35,27 +38,31 @@ function CheckoutForm({ amount }) {
 
             if (result.error) {
                 setMessage(result.error.message);
-            } else if (result.paymentIntent.status === "succeeded") {
-                setMessage("Payment successful!");
+            } else if (result.paymentIntent.status === 'succeeded') {
+                setMessage('Payment successful!');
             }
         } catch (err) {
-            setMessage("Payment failed. Please try again.");
-            console.error("Payment Error:", err);
-        } finally {
-            setLoading(false);
+            console.error('Payment Error:', err);
+            setMessage('Payment failed. Please try again.');
         }
+
+        setLoading(false);
     };
 
     return (
-        <form onSubmit={handlePayment} style={{ marginTop: "20px" }}>
+        <form onSubmit={handlePayment} style={{ marginTop: '20px' }}>
             <CardElement />
             <button disabled={!stripe || loading}>
-                {loading ? "Processing..." : "Pay with Card"}
+                {loading ? 'Processing...' : 'Pay with Card'}
             </button>
             {message && <p>{message}</p>}
         </form>
     );
 }
+
+CheckoutForm.propTypes = {
+    amount: PropTypes.number.isRequired,
+};
 
 export default function PlaceOrder({ isAdmin }) {
     const [formData, setFormData] = useState({
@@ -79,18 +86,21 @@ export default function PlaceOrder({ isAdmin }) {
 
     async function fetchProducts() {
         const { data, error } = await supabase.from('products').select('id, title');
-        if (!error) setProducts(data);
-        else console.error('Error fetching products:', error.message);
+        if (!error) {
+            setProducts(data);
+        } else {
+            console.error('Error fetching products:', error.message);
+        }
     }
 
     async function fetchOrders() {
         setLoadingOrders(true);
-        const { data, error } = await supabase
-            .from('orders')
-            .select()
-            .order('id', { ascending: false });
-        if (!error) setOrders(data);
-        else console.error(error);
+        const { data, error } = await supabase.from('orders').select().order('id', { ascending: false });
+        if (!error) {
+            setOrders(data);
+        } else {
+            console.error('Error fetching orders:', error.message);
+        }
         setLoadingOrders(false);
     }
 
@@ -113,31 +123,38 @@ export default function PlaceOrder({ isAdmin }) {
             setStatus({ error: 'Invalid email format.', success: '', loading: false });
             return false;
         }
+
         if (!phoneRegex.test(phone)) {
             setStatus({ error: 'Invalid phone number.', success: '', loading: false });
             return false;
         }
+
         if (quantity < 1) {
             setStatus({ error: 'Quantity must be at least 1.', success: '', loading: false });
             return false;
         }
+
         return true;
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
         setStatus({ error: '', success: '', loading: false });
+
         if (!validate()) return;
+
         setStatus({ loading: true, error: '', success: '' });
 
-        const { error } = await supabase.from('orders').insert([{
-            name: formData.name.trim(),
-            email: formData.email.trim(),
-            phone: formData.phone.trim(),
-            product_id: formData.productId.trim(),
-            quantity: formData.quantity,
-            message: formData.message.trim(),
-        }]);
+        const { error } = await supabase.from('orders').insert([
+            {
+                name: formData.name.trim(),
+                email: formData.email.trim(),
+                phone: formData.phone.trim(),
+                product_id: formData.productId.trim(),
+                quantity: formData.quantity,
+                message: formData.message.trim(),
+            },
+        ]);
 
         if (error) {
             setStatus({ error: 'Failed to place order. Try again.', success: '', loading: false });
@@ -165,57 +182,28 @@ export default function PlaceOrder({ isAdmin }) {
         <div className="order-container">
             <div className="form-side">
                 <h2>Place Your Order</h2>
+
                 {status.error && <p className="error-msg">{status.error}</p>}
                 {status.success && <p className="success-msg">{status.success}</p>}
 
                 <form onSubmit={handleSubmit} noValidate>
                     <div className="form-group">
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            placeholder=" "
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="text" name="name" id="name" placeholder=" " value={formData.name} onChange={handleChange} required />
                         <label htmlFor="name">Name *</label>
                     </div>
 
                     <div className="form-group">
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            placeholder=" "
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="email" name="email" id="email" placeholder=" " value={formData.email} onChange={handleChange} required />
                         <label htmlFor="email">Email *</label>
                     </div>
 
                     <div className="form-group">
-                        <input
-                            type="tel"
-                            name="phone"
-                            id="phone"
-                            placeholder=" "
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="tel" name="phone" id="phone" placeholder=" " value={formData.phone} onChange={handleChange} required />
                         <label htmlFor="phone">Phone *</label>
                     </div>
 
                     <div className="form-group">
-                        <select
-                            name="productId"
-                            id="productId"
-                            value={formData.productId}
-                            onChange={handleChange}
-                            required
-                        >
+                        <select name="productId" id="productId" value={formData.productId} onChange={handleChange} required>
                             <option value="">-- Select Product --</option>
                             {products.map((product) => (
                                 <option key={product.id} value={product.id}>
@@ -227,26 +215,12 @@ export default function PlaceOrder({ isAdmin }) {
                     </div>
 
                     <div className="form-group">
-                        <input
-                            type="number"
-                            name="quantity"
-                            id="quantity"
-                            min="1"
-                            value={formData.quantity}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="number" name="quantity" id="quantity" placeholder=" " min="1" value={formData.quantity} onChange={handleChange} required />
                         <label htmlFor="quantity">Quantity *</label>
                     </div>
 
                     <div className="form-group">
-                        <textarea
-                            name="message"
-                            id="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            rows="3"
-                        />
+                        <textarea name="message" id="message" placeholder=" " value={formData.message} onChange={handleChange} rows="3" />
                         <label htmlFor="message">Message (optional)</label>
                     </div>
 
@@ -308,8 +282,4 @@ export default function PlaceOrder({ isAdmin }) {
 
 PlaceOrder.propTypes = {
     isAdmin: PropTypes.bool.isRequired,
-};
-
-CheckoutForm.propTypes = {
-    amount: PropTypes.number.isRequired,
 };
