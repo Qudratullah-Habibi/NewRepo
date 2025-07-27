@@ -20,9 +20,7 @@ function CheckoutForm({ amount }) {
         setLoading(true);
 
         try {
-            // Create Payment Intent via backend
             const res = await fetch("/api/create-payment-intent", {
-
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount }),
@@ -40,13 +38,11 @@ function CheckoutForm({ amount }) {
             } else if (result.paymentIntent.status === "succeeded") {
                 setMessage("Payment successful!");
             }
-        } catch {
+        } catch (err) {
             setMessage("Payment failed. Please try again.");
+            console.error("Payment Error:", err);
         }
 
-
-        setLoading(false);
-    };
 
     return (
         <form onSubmit={handlePayment} style={{ marginTop: "20px" }}>
