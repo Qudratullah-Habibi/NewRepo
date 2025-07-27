@@ -21,7 +21,8 @@ function CheckoutForm({ amount }) {
 
         try {
             // Create Payment Intent via backend
-            const res = await fetch("http://localhost:4242/create-payment-intent", {
+            const res = await fetch("/api/create-payment-intent", {
+
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ amount }),
@@ -39,9 +40,8 @@ function CheckoutForm({ amount }) {
             } else if (result.paymentIntent.status === "succeeded") {
                 setMessage("Payment successful!");
             }
-        }  } catch (err) {
+        } catch {
             setMessage("Payment failed. Please try again.");
-            console.error("Payment Error:", err);
         }
 
 
