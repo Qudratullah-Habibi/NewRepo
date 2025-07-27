@@ -37,11 +37,15 @@ function CheckoutForm({ amount }) {
                 setMessage(result.error.message);
             } else if (result.paymentIntent.status === "succeeded") {
                 setMessage("Payment successful!");
-            
+            }
+
         } catch (err) {
             setMessage("Payment failed. Please try again.");
             console.error("Payment Error:", err);
         }
+
+        setLoading(false);
+    };
 
 
     return (
