@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import supabase from './supabaseClient';
-import emailjs from 'emailjs-com'; // ✅ Added for EmailJS
+import emailjs from '@emailjs/browser';
+
 
 function AdminOrders() {
     const [orders, setOrders] = useState([]);
